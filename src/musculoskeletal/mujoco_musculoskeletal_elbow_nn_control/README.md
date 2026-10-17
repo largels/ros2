@@ -49,6 +49,17 @@ Collected data defaults to `data/episodes`, which is ignored by Git. Every CSV h
 
 ## 测试 / Tests
 
+## 神经网络训练 / Neural-network training
+
+训练器按完整 episode 划分训练、验证和测试集合，输入关节角、角速度、目标轨迹与肌腱力，输出两路 `[0,1]` 肌肉激活量。模型参数写入小型 JSON 文件，不提交二进制权重；评估报告 MAE、RMSE、稳态误差和 CPU 推理耗时。
+
+The trainer splits complete episodes into train, validation, and test sets. It maps joint angle, angular velocity, target trajectory, and tendon forces to two bounded muscle activations. Parameters are stored in a small JSON file rather than committed binary weights. Evaluation reports MAE, RMSE, steady-state error, and CPU inference latency.
+
+```bash
+python3 -m mujoco_musculoskeletal_elbow_nn_control.train \
+  --data data/episodes --model data/elbow_mlp.json
+```
+
 ```bash
 python3 -m pytest src/musculoskeletal/mujoco_musculoskeletal_elbow_nn_control/test -q
 colcon test --packages-select mujoco_musculoskeletal_elbow_nn_control
